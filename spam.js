@@ -154,16 +154,7 @@ augur.connect({
     ipc: process.env.GETH_IPC,
     ws: "ws://127.0.0.1:8546"
 }, function (connection) {
-    if (DEBUG) {
-        console.log("Connected:", connection);
-        console.log(chalk.cyan.bold("local:   "), chalk.cyan(augur.rpc.nodes.local));
-        console.log(chalk.blue.bold("ws:      "), chalk.blue(augur.rpc.wsUrl));
-        console.log(chalk.magenta.bold("ipc:     "), chalk.magenta(augur.rpc.ipcpath));
-        this.print_nodes(augur.rpc.nodes.hosted);
-        console.log(chalk.yellow.bold("network: "), chalk.yellow(augur.network_id));
-        console.log(chalk.bold("coinbase:"), chalk.white.dim(augur.coinbase));
-        console.log(chalk.bold("from:    "), chalk.white.dim(augur.from));
-    }
+    if (DEBUG) console.log("Connected:", connection);
     var numMarkets = parseInt(augur.getNumMarketsBranch(augur.constants.DEFAULT_BRANCH_ID));
     console.log(chalk.blue.bold("Found " + numMarkets + " markets"));
     spam(function (e) {
