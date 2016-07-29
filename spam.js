@@ -9,6 +9,12 @@ var augur = require("augur.js");
 
 var DEBUG = process.env.NODE_ENV === "development";
 
+var connectInfo = {
+    http: "http://127.0.0.1:8545",
+    ipc: process.env.GETH_IPC,
+    ws: "ws://127.0.0.1:8546"
+};
+
 var noop = function () {};
 
 var topUp = function (callback) {
@@ -92,8 +98,8 @@ var spam = function (erf) {
                     var orderBookParams = {
                         market: marketID,
                         liquidity: Math.floor(400*Math.random()) + 10000,
-                        startingQuantity: Math.floor(40*Math.random()) + 1000,
-                        bestStartingQuantity: Math.floor(40*Math.random()) + 1000
+                        startingQuantity: Math.floor(40*Math.random()) + 5000,
+                        bestStartingQuantity: Math.floor(40*Math.random()) + 2500
                     };
                     var initialFairPrices = new Array(numOutcomes);
                     if (type === "scalar") {
@@ -148,12 +154,8 @@ var spam = function (erf) {
 };
 
 augur.rpc.retryDroppedTxs = true;
-augur.rpc.setLocalNode("http://127.0.0.1:8545");
-augur.connect({
-    http: "http://127.0.0.1:8545",
-    ipc: process.env.GETH_IPC,
-    ws: "ws://127.0.0.1:8546"
-}, function (connection) {
+augur.rpc.setLocalNode(connectInfo.http);
+augur.connect(connectInfo, function (connection) {
     if (DEBUG) console.log("Connected:", connection);
     var numMarkets = parseInt(augur.getNumMarketsBranch(augur.constants.DEFAULT_BRANCH_ID));
     console.log(chalk.blue.bold("Found " + numMarkets + " markets"));
