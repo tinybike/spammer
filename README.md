@@ -1,7 +1,7 @@
 Spammer
 =======
 
-[![Build Status](https://travis-ci.org/AugurProject/market-spammer.svg?branch=master)](https://travis-ci.org/AugurProject/market-spammer)
+[![Build Status](https://travis-ci.org/AugurProject/spammer.svg?branch=master)](https://travis-ci.org/AugurProject/spammer)
 [![npm version](https://badge.fury.io/js/spammer.svg)](https://badge.fury.io/js/spammer)
 
 Non-stop Augur market and orderbook creation spam.  Intended for use on testnets only.  (Market creation ain't free!)
