@@ -14,6 +14,7 @@ var noop = function () {};
 
 var spammer = {
     debug: process.env.NODE_ENV === "development",
+    generateOrderBook: true,
     connection: {
         http: "http://127.0.0.1:8545",
         ipc: process.env.GETH_IPC,
@@ -21,7 +22,7 @@ var spammer = {
     },
     takerFee: "0.02",
     makerFee: "0.01",
-    liquidity: {baseline: 1000, multiplier: 400},
+    liquidity: {baseline: 9000, multiplier: 400},
     startingQuantity: {baseline: 500, multiplier: 40}
 };
 
@@ -53,14 +54,17 @@ spammer.randomizeOrderBookParams = function (market, type, numOutcomes, minValue
         orderBookParams.priceWidth = (0.25*(maxValue - minValue)).toString();
         var avg = 0.5*(minValue + maxValue);
         initialFairPrices = [0.5*avg, 1.5*avg];
+        console.log("scalar IFP:", initialFairPrices);
         while (initialFairPrices[0] < minValue + 0.5*parseFloat(orderBookParams.priceWidth)) {
             initialFairPrices[0] = initialFairPrices[0]*1.01;
+            console.log("scalar IFP [adjust 0]:", initialFairPrices);
         }
         while (initialFairPrices[1] > maxValue - 0.5*parseFloat(orderBookParams.priceWidth)) {
             initialFairPrices[1] = initialFairPrices[1]*0.99;
+            console.log("scalar IFP [adjust 1]:", initialFairPrices);
         }
     } else {
-        orderBookParams.priceWidth = Math.random().toString();
+        orderBookParams.priceWidth = (0.25*Math.random()).toString();
         for (var i = 0; i < numOutcomes; ++i) {
             do {
                 initialFairPrices[i] = ((0.4*Math.random()) + 0.3);
@@ -203,6 +207,12 @@ spammer.createRandomMarkets = function (augur, marketsToCreate, callback) {
     async.forever(function (createNext) {
         self.createRandomMarket(augur, function (err, market) {
             if (err || !market) return self.topUp(augur, createNext);
+            if (!self.generateOrderBook) {
+                if (marketsToCreate && ++marketsCreated >= marketsToCreate) {
+                    return createNext({isComplete: true});
+                }
+                return self.topUp(augur, createNext);
+            }
             self.generateRandomOrderBook(augur, market, function () {
                 if (marketsToCreate && ++marketsCreated >= marketsToCreate) {
                     return createNext({isComplete: true});

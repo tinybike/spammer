@@ -1,6 +1,6 @@
 {
   "name": "spammer",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Augur market spammer",
   "main": "index.js",
   "scripts": {
@@ -23,7 +23,7 @@
   "homepage": "https://github.com/AugurProject/spammer#readme",
   "dependencies": {
     "async": "^2.0.1",
-    "augur.js": "^1.9.19",
+    "augur.js": "^1.9.26",
     "chalk": "^1.1.3",
     "madlibs": "0.0.0"
   },
