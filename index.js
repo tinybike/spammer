@@ -14,7 +14,7 @@ var noop = function () {};
 
 var spammer = {
     debug: process.env.NODE_ENV === "development",
-    generateOrderBook: true,
+    generateOrderBook: false,
     connection: {
         http: "http://127.0.0.1:8545",
         ipc: process.env.GETH_IPC,
@@ -22,8 +22,8 @@ var spammer = {
     },
     takerFee: "0.02",
     makerFee: "0.01",
-    liquidity: {baseline: 9000, multiplier: 400},
-    startingQuantity: {baseline: 500, multiplier: 40}
+    liquidity: {baseline: 50, multiplier: 2},
+    startingQuantity: {baseline: 10, multiplier: 2}
 };
 
 spammer.topUp = function (augur, callback) {
@@ -129,7 +129,7 @@ spammer.randomizeMarketType = function () {
         type = "categorical";
         maxValue = 2;
         minValue = 1;
-        numOutcomes = Math.floor(6*Math.random()) + 3;
+        numOutcomes = Math.floor(6*Math.random()) + 2;
     }
     return {
         type: type,
