@@ -127,9 +127,9 @@ spammer.randomizeMarketType = function () {
         numOutcomes = 2;
     } else {
         type = "categorical";
-        maxValue = 2;
+        maxValue = Math.floor(6*Math.random()) + 2;
         minValue = 1;
-        numOutcomes = Math.floor(6*Math.random()) + 2;
+        numOutcomes = maxValue;
     }
     return {
         type: type,
